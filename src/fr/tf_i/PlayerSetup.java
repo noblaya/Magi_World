@@ -1,20 +1,162 @@
 package fr.tf_i;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import static java.nio.file.StandardOpenOption.APPEND;
+
+/**
+ * Class used to setup players (choose class, level, stats, etc ...)
+ */
 public class PlayerSetup {
     Scanner sc = new Scanner(System.in);
-    private int availablePoints = 1;
 
-    public void setupPlayers (int playerNb) {
+    //Players Stats
+    private int classe = -1;
+    private int level = -1;
+    private int maxLife = -1;
+    private int currentLife = -1;
+    private int strength = -1;
+    private int agility = -1;
+    private int intelligence = -1;
+
+    //Setup necessaries
+    private int availablePoints = 1;
+    private String playerSetup = "";
+    private String intro = "";
+
+
+    // ----- METHODS -----
+
+    // MAIN
+
+    /**
+     * Main method used to dispatch between player 1 and 2
+     * @param playerNb which player to setup.
+     */
+    public void SetupPlayers(int playerNb) {
+
         if (playerNb == 1) {
+
+            System.out.println("");
+            System.out.println("----------------------------------");
+            System.out.println("Creation du personnage du Joueur 1");
+            System.out.println("----------------------------------");
+
+            classe = setClasse();
+            level = setLevel();
+            maxLife = setLife(level);
+            currentLife = setCurrentLife(maxLife);
+            strength = setStrength();
+            agility = setAgility();
+            intelligence = setIntelligence();
+
+            //MAKE PLAYER 1 THEN WRITE IN CSV
+            playerSetup = playerSetupToPrint(1);
+
+            Path playerSetupPath = Paths.get("Player1.csv");
+
+            try {
+                Files.write(playerSetupPath, String.format(playerSetup).getBytes(), APPEND);
+            } catch (IOException e) {
+                System.out.println("Une erreur est survenue lors de la generation du Player1.csv. Merci de reessayer.");
+                return;
+            }
+
+            //MAKE INTRO THEN PRINT IT
+            intro = setIntro(1);
+            System.out.println(intro);
+
+
+            SetupPlayers(2); // Then setup Player 2
+
+
+
+        }
+        else if (playerNb == 2) {
+
+
+            System.out.println("");
+            System.out.println("----------------------------------");
+            System.out.println("Creation du personnage du Joueur 2");
+            System.out.println("----------------------------------");
+
+            classe = setClasse();
+            level = setLevel();
+            maxLife = setLife(level);
+            currentLife = setCurrentLife(maxLife);
+            strength = setStrength();
+            agility = setAgility();
+            intelligence = setIntelligence();
+
+            //MAKE PLAYER 2 THEN WRITE IN CSV
+            playerSetup = playerSetupToPrint(2);
+
+            Path playerSetupPath = Paths.get("Player2.csv");
+
+            try {
+                Files.write(playerSetupPath, String.format(playerSetup).getBytes(), APPEND);
+            } catch (IOException e) {
+                System.out.println("Une erreur est survenue lors de la generation du Player2.csv. Merci de reessayer.");
+                return;
+            }
+
+            // MAKE INTRO THEN PRINT IT
+            intro = setIntro(2);
+            System.out.println(intro);
+
+            //START GAME HERE
+            Game game = new Game();
+            game.Launch(true);
 
         }
         else {
-
+            System.out.println("Erreur (PlayerSetup Class setupPlayers method. Wrong playerNb)");
         }
     }
+
+
+
+
+    // SETUP BASE
+
+    private String playerSetupToPrint(int playerNb) {
+        String setupToPrint;
+
+        setupToPrint = playerNb + "," + classe + "," + level + "," + maxLife + "," + currentLife + "," + strength + "," + agility + "," + intelligence + "%n";
+
+        return setupToPrint;
+    }
+
+    private String setIntro(int playerNb) {
+
+        switch (classe) {
+            case 1:
+                intro = "Woarg je suis le Guerrier Joueur " + playerNb + " niveau " + level + ", je possede " + maxLife + " de vitalite, " + strength + " de force, " + agility + " d'agilite et " + intelligence + " d'intelligence !";
+                break;
+            case 2:
+                intro = "Hmmm je suis le Rodeur Joueur " + playerNb + " niveau " + level + ", je possede " + maxLife + " de vitalite, " + strength + " de force, " + agility + " d'agilite et " + intelligence + " d'intelligence !";
+                break;
+            case 3:
+                intro = "Abracadabra je suis le Mage Joueur " + playerNb + " niveau " + level + ", je possede " + maxLife + " de vitalite, " + strength + " de force, " + agility + " d'agilite et " + intelligence + " d'intelligence !";
+                break;
+
+            default:
+                intro = "Erreur lors du choix de la classe, je suis donc le simple Humain Joueur " + playerNb + " niveau " + level + ", je possede " + maxLife + " de vitalite, " + strength + " de force, " + agility + " d'agilite et " + intelligence + " d'intelligence !";
+        }
+
+        return intro;
+    }
+
+
+
+
+    //SETUP MODULES (SET PLAYERS STATS)
+
 
     /**
      * Set Player's Class method
@@ -65,6 +207,7 @@ public class PlayerSetup {
             } while (!responseIsGood);
         } while (level < 1 || level > 100);
 
+        availablePoints = level;
 
         return level;
     }
