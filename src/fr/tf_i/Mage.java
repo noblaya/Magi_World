@@ -10,10 +10,10 @@ public class Mage extends Player{
         int damage = -1;
 
         //Calculate damages to apply
-        damage = strength;
+        damage = intelligence;
 
         //Show damages and apply it
-        System.out.println("Joueur " + playerNb + " utilise Coup d'Epée et inflige " + damage + " dommages.");
+        System.out.println("Joueur " + playerNb + " utilise Boule de Feu et inflige " + damage + " dommages.");
         enemy.applyDamages(damage);
     }
 
@@ -37,6 +37,6 @@ public class Mage extends Player{
         System.out.println("Joueur " + playerNb + " utilise Soin et gagne " + boost + " en vitalite.");
 
         //Apply them
-        this.agility = (this.agility + boost);
+        this.currentLife = (this.currentLife + boost);
     }
 }

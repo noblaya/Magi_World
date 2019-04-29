@@ -3,6 +3,9 @@ package fr.tf_i;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
+/**
+ * Basic Players characters Class
+ */
 public abstract class Player {
 
     public int playerNb = -1;
@@ -85,9 +88,10 @@ public abstract class Player {
      * @param damage the amount of damage to apply
      */
     public void applyDamages(int damage) {
-        this.currentLife = this.currentLife - damage;
+        this.currentLife = (this.currentLife - damage);
 
         if (this.currentLife <= 0) {
+            System.out.println("");
             System.out.println("Joueur " + this.playerNb + " est mort");
             System.out.println("Joueur " + this.playerNb + " à perdu !");
             Game game = new Game();

@@ -38,7 +38,7 @@ public class PlayerSetup {
      * Main method used to dispatch between player 1 and 2
      * @param playerNb which player to setup.
      */
-    public void SetupPlayers(int playerNb) {
+    public void SetupPlayers(int playerNb, boolean forTest) {
 
         if (playerNb == 1) {
 
@@ -72,7 +72,7 @@ public class PlayerSetup {
             System.out.println(intro);
 
 
-            SetupPlayers(2); // Then setup Player 2
+            SetupPlayers(2, false); // Then setup Player 2
 
 
 
@@ -111,7 +111,12 @@ public class PlayerSetup {
 
             //START GAME HERE
             Game game = new Game();
-            game.Launch(true);
+            if (!forTest) {
+                game.Launch(true);
+            }
+            else {
+                game.Launch(true);
+            }
 
         }
         else {
@@ -314,7 +319,7 @@ public class PlayerSetup {
                 }
 
             } while (!responseIsGood);
-        } while (intelligence < 0 || intelligence > 100);
+        } while (intelligence < 0 || intelligence > availablePoints);
         availablePoints = (availablePoints - intelligence);
 
         return intelligence;

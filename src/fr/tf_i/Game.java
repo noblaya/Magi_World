@@ -18,25 +18,55 @@ public class Game {
 
 
 
+
+    /**
+     * Launch the game and check if the game is Setup if not, set it up, if yes, Start game.
+     * @param isGameSetup Game is setup (players stats) ?
+     */
     public void Launch(boolean isGameSetup){
         PlayerSetup ps = new PlayerSetup();
-
-        if (!isGameSetup){
-            ps.SetupPlayers(1);
-        }
-        else {
-            StartGame();
-        }
-    }
-
-    public void StartGame() {
-
-        this.setPlayersSplits(1);
-
-
+            if (!isGameSetup) {
+                ps.SetupPlayers(1, false);
+            } else {
+                startGame(false);
+            }
 
     }
 
+    /**
+     * Launch the game when players objects are created.
+     * @param isPlayerSetItUp Players objects are created ?
+     */
+    public void startGame(boolean isPlayerSetItUp) {
+
+
+            if (!isPlayerSetItUp) {
+
+                this.setPlayersSplits(1);
+
+            } else {
+
+                game(1);
+            }
+    }
+
+    /**
+     * Game action loop
+     * @param playerNb Player's turn to play
+     */
+    public void game(int playerNb) {
+        if (playerNb == 1){
+            playerAction(1);
+        }
+        else if (playerNb == 2) {
+            playerAction(2);
+        }
+    }
+
+    /**
+     * Make players an usable board about theirs stats using CSV.
+     * @param playerNb
+     */
     public void setPlayersSplits (int playerNb) {
 
         //READ PLAYER 1 CSV
@@ -68,6 +98,10 @@ public class Game {
 
     }
 
+    /**
+     * Create player object
+     * @param playerNb which player to create
+     */
     public void createPlayers(int playerNb) {
         int classe = -1;
         int level = -1;
@@ -77,7 +111,7 @@ public class Game {
         int agility = -1;
         int intelligence = -1;
 
-        //JOUEUR 1
+        //PLAYER 1
         if (playerNb == 1) {
 
             classe = Integer.valueOf(splitedPl1[1]);
@@ -103,7 +137,7 @@ public class Game {
                     break;
             }
 
-            //JOUEUR 2
+            //PLAYER 2
         } else if (playerNb == 2) {
             classe = Integer.valueOf(splitedPl2[1]);
             level = Integer.valueOf(splitedPl2[2]);
@@ -115,16 +149,16 @@ public class Game {
 
             switch (classe) {
                 case 1:
-                    player2 = new Guerrier(1, classe, level, maxLife, currentLife, strength, agility, intelligence);
-                    playerAction(1);
+                    player2 = new Guerrier(2, classe, level, maxLife, currentLife, strength, agility, intelligence);
+                    startGame(true);
                     break;
                 case 2:
-                    player2 = new Rodeur(1, classe, level, maxLife, currentLife, strength, agility, intelligence);
-                    playerAction(1);
+                    player2 = new Rodeur(2, classe, level, maxLife, currentLife, strength, agility, intelligence);
+                    startGame(true);
                     break;
                 case 3:
-                    player2 = new Mage(1, classe, level, maxLife, currentLife, strength, agility, intelligence);
-                    playerAction(1);
+                    player2 = new Mage(2, classe, level, maxLife, currentLife, strength, agility, intelligence);
+                    startGame(true);
                     break;
             }
 
@@ -133,12 +167,18 @@ public class Game {
 
     }
 
+    /**
+     * Players Actions (Attack Boost, etc)
+     * @param playerNb Which player turn
+     */
     public void playerAction(int playerNb) {
-        int currentAction = -1;
         boolean responseIsGood = false;
+        int currentAction = -1;
 
         // PLAYER 1 ACTION
         if (playerNb == 1) {
+
+
             do {
                 do {
                     System.out.println("");
@@ -155,25 +195,27 @@ public class Game {
 
                 } while (!responseIsGood);
 
+                switch (currentAction) {
+                    case 1 :
+                        player1.basicAttack(player2);
+                        currentAction = -1; //Reset current action int.
+                        playerAction(2);
+                        break;
+
+                    case 2 :
+                        player1.specialAttack(player2);
+                        currentAction = -1;
+                        playerAction(2);
+                        break;
+                }
+
             } while (currentAction < 1 || currentAction > 2);
 
-            switch (currentAction) {
-                case 1 :
-                    player1.basicAttack(player2);
-                    currentAction = -1; //Reset current action int.
-                    playerAction(2);
-                    break;
-
-                case 2 :
-                    player1.specialAttack(player2);
-                    currentAction = -1;
-                    playerAction(2);
-                    break;
-            }
         }
 
         // PLAYER 2 ACTIONS
         else if (playerNb == 2) {
+
             do {
                 do {
                     System.out.println("");
@@ -190,29 +232,28 @@ public class Game {
 
                 } while (!responseIsGood);
 
+                switch (currentAction) {
+                    case 1 :
+                        player2.basicAttack(player1);
+                        currentAction = -1; //Reset current action int.
+                        playerAction(1);
+                        break;
+
+                    case 2 :
+                        player2.specialAttack(player1);
+                        currentAction = -1;
+                        playerAction(1);
+                        break;
+                }
+
             } while (currentAction < 1 || currentAction > 2);
 
-            switch (currentAction) {
-                case 1 :
-                    player2.basicAttack(player1);
-                    currentAction = -1; //Reset current action int.
-                    playerAction(2);
-                    break;
-
-                case 2 :
-                    player2.specialAttack(player1);
-                    currentAction = -1;
-                    playerAction(2);
-                    break;
-            }
         }
         else {
             System.out.println("ERREUR : Game / playerAction / Mauvais playerNb");
             System.exit(101);
         }
     }
-
-
 
 
 }

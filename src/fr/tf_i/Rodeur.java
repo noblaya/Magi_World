@@ -11,10 +11,10 @@ public class Rodeur extends Player {
         int damage = -1;
 
         //Calculate damages to apply
-        damage = strength;
+        damage = agility;
 
         //Show damages and apply it
-        System.out.println("Joueur " + playerNb + " utilise Coup d'Epée et inflige " + damage + " dommages.");
+        System.out.println("Joueur " + playerNb + " utilise Tir à l'Arc et inflige " + damage + " dommages.");
         enemy.applyDamages(damage);
     }
 
