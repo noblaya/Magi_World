@@ -3,15 +3,15 @@ package fr.tf_i;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Game {
+class Game {
 
     private Scanner sc = new Scanner(System.in);
 
-    String player1CSVBrut = "";
-    String player2CSVBrut = "";
+    private String player1CSVBrut = "";
+    private String player2CSVBrut = "";
 
-    String[] splitedPl1;
-    String[] splitedPl2;
+    private String[] splitedPl1;
+    private String[] splitedPl2;
 
     Player player1 = null;
     Player player2 = null;
@@ -23,10 +23,10 @@ public class Game {
      * Launch the game and check if the game is Setup if not, set it up, if yes, Start game.
      * @param isGameSetup Game is setup (players stats) ?
      */
-    public void Launch(boolean isGameSetup){
+    void Launch(boolean isGameSetup){
         PlayerSetup ps = new PlayerSetup();
             if (!isGameSetup) {
-                ps.SetupPlayers(1, false);
+                ps.SetupPlayers(1);
             } else {
                 startGame(false);
             }
@@ -37,7 +37,7 @@ public class Game {
      * Launch the game when players objects are created.
      * @param isPlayerSetItUp Players objects are created ?
      */
-    public void startGame(boolean isPlayerSetItUp) {
+    private void startGame(boolean isPlayerSetItUp) {
 
 
             if (!isPlayerSetItUp) {
@@ -54,7 +54,7 @@ public class Game {
      * Game action loop
      * @param playerNb Player's turn to play
      */
-    public void game(int playerNb) {
+    private void game(int playerNb) {
         if (playerNb == 1){
             playerAction(1);
         }
@@ -65,9 +65,9 @@ public class Game {
 
     /**
      * Make players an usable board about theirs stats using CSV.
-     * @param playerNb
+     * @param playerNb Which player csv to use
      */
-    public void setPlayersSplits (int playerNb) {
+    private void setPlayersSplits(int playerNb) {
 
         //READ PLAYER 1 CSV
         if (playerNb == 1) {
@@ -102,14 +102,14 @@ public class Game {
      * Create player object
      * @param playerNb which player to create
      */
-    public void createPlayers(int playerNb) {
-        int classe = -1;
-        int level = -1;
-        int maxLife = -1;
-        int currentLife = -1;
-        int strength = -1;
-        int agility = -1;
-        int intelligence = -1;
+    private void createPlayers(int playerNb) {
+        int classe;
+        int level;
+        int maxLife;
+        int currentLife;
+        int strength;
+        int agility;
+        int intelligence;
 
         //PLAYER 1
         if (playerNb == 1) {
@@ -171,7 +171,7 @@ public class Game {
      * Players Actions (Attack Boost, etc)
      * @param playerNb Which player turn
      */
-    public void playerAction(int playerNb) {
+    private void playerAction(int playerNb) {
         boolean responseIsGood = false;
         int currentAction = -1;
 

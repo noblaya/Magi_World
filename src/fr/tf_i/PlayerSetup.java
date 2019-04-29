@@ -12,7 +12,7 @@ import static java.nio.file.StandardOpenOption.APPEND;
 /**
  * Class used to setup players (choose class, level, stats, etc ...)
  */
-public class PlayerSetup {
+class PlayerSetup {
     Scanner sc = new Scanner(System.in);
 
     //Players Stats
@@ -38,11 +38,11 @@ public class PlayerSetup {
      * Main method used to dispatch between player 1 and 2
      * @param playerNb which player to setup.
      */
-    public void SetupPlayers(int playerNb, boolean forTest) {
+    void SetupPlayers(int playerNb) {
 
         if (playerNb == 1) {
 
-            System.out.println("");
+            System.out.println(" ");
             System.out.println("----------------------------------");
             System.out.println("Creation du personnage du Joueur 1");
             System.out.println("----------------------------------");
@@ -72,7 +72,7 @@ public class PlayerSetup {
             System.out.println(intro);
 
 
-            SetupPlayers(2, false); // Then setup Player 2
+            SetupPlayers(2); // Then setup Player 2
 
 
 
@@ -80,7 +80,7 @@ public class PlayerSetup {
         else if (playerNb == 2) {
 
 
-            System.out.println("");
+            System.out.println(" ");
             System.out.println("----------------------------------");
             System.out.println("Creation du personnage du Joueur 2");
             System.out.println("----------------------------------");
@@ -111,12 +111,7 @@ public class PlayerSetup {
 
             //START GAME HERE
             Game game = new Game();
-            if (!forTest) {
-                game.Launch(true);
-            }
-            else {
-                game.Launch(true);
-            }
+            game.Launch(true);
 
         }
         else {
@@ -237,14 +232,6 @@ public class PlayerSetup {
         int currentLife = maxLife;
 
         return currentLife;
-    }
-
-    /**
-     * Set available points to spend
-     * @param level Player's Level set
-     */
-    private void setAvailablePoints(int level) {
-        availablePoints = level;
     }
 
     /**
